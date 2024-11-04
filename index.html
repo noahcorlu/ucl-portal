@@ -183,6 +183,56 @@
             <li><a href="https://drive.google.com/drive/folders/1vI8Bpy7gNRnynN9gakD2PHnY9nZcooqK?usp=drive_link" target="_blank">Google Drive</a></li>
         </ul>
     </div>
+    <script>
+        // Création d'un objet pour stocker les sections et les touches qui y sont associées
+        const courseSections = {
+            'I': ['LEPL1402 - Informatique 2'],
+            'A': ['LANGL1383 - Anglais 3 pour informaticiens', 'LINFO1121 - Algorithmique et structures de données'],
+            'P': ['LBIR1212 - Probabilités et statistique (I)'],
+            'M': ['LECGE1222C - Microéconomie', 'LINFO1114 - Mathématiques discrètes', 'LINFO1122 - Méthodes de conception de programmes'],
+            'D': ['LEPL1109 - Statistics and data science'],
+            'C': ['LINFO1131 - Advanced programming language concepts'],
+            'S': ['LINFO1252 - Systèmes Informatiques'],
+            'T': ['LCLIG2260 - Introduction au traitement de la parole']
+        };
+    
+        // Création d'un compteur pour chaque touche afin de gérer le défilement multiple pour certaines lettres
+        const scrollCount = {};
+    
+        // Initialiser chaque compteur de touche à 0
+        for (let key in courseSections) {
+            scrollCount[key] = 0;
+        }
+    
+        // Fonction pour gérer les pressions de touches
+        document.addEventListener('keydown', function(event) {
+            const keyPressed = event.key.toUpperCase();
+    
+            // Vérifie si la touche appuyée correspond à une des lettres configurées
+            if (courseSections[keyPressed]) {
+                // Récupère la liste des titres de sections associés à cette touche
+                const sections = courseSections[keyPressed];
+                // Récupère l'index actuel dans la liste pour la touche
+                const index = scrollCount[keyPressed] % sections.length;
+                const sectionTitle = sections[index];
+                
+                // Cherche l'élément de la section correspondant au titre de cours
+                const sectionElement = Array.from(document.querySelectorAll('.course-section')).find(
+                    section => section.querySelector('h2').textContent === sectionTitle
+                );
+    
+                if (sectionElement) {
+                    // Scrolle vers l'élément trouvé
+                    sectionElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Incrémente le compteur pour la touche pour passer à la prochaine occurrence lors du prochain appui
+                    scrollCount[keyPressed]++;
+                } else {
+                    console.log(`Section "${sectionTitle}" non trouvée pour la touche ${keyPressed}.`);
+                }
+            }
+        });
+    </script>
+    
 
 </body>
 </html>
